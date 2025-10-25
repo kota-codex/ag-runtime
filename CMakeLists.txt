@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.16)
 project(ag_runtime)
 
-add_subdirectory(external/ag-ffi-header)
+add_subdirectory(ag-ffi-header)
 
 add_library (ag_runtime STATIC
     src/runtime.c
