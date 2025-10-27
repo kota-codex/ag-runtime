@@ -1,5 +1,9 @@
-cmake_minimum_required(VERSION 3.16)
-project(ag_runtime)
+cmake_minimum_required(VERSION 3.15)
+project(agRuntime LANGUAGES C)
+
+if(NOT DEFINED CMAKE_TOOLCHAIN_FILE)
+  MESSAGE(FATAL_ERROR "Toolchain file not set, try using: cmake --preset default")
+endif()
 
 add_subdirectory(ag-ffi-header)
 
@@ -21,13 +25,5 @@ add_library (ag_runtime STATIC
     src/map/shared-map.c
     src/map/weak-map.c
 )
-target_compile_definitions(ag_runtime PRIVATE AG_STANDALONE_COMPILER_MODE)
-set_property(TARGET ag_runtime PROPERTY C_STANDARD 11)
-target_include_directories(ag_runtime PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
-target_link_libraries(ag_runtime PUBLIC ag_ffi_header)
 
-install(
-    TARGETS ag_runtime
-    EXPORT ag_runtimeTargets
-    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
-)
+ag_ffi_configure_target(ag_runtime "") #TODO: move defs to sys.ag
