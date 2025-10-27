@@ -549,7 +549,7 @@ int64_t ag_fn_sys_hash(AgObject* obj) {  // Shared
 	if (!obj)
 		return 0;
 	assert(obj->ctr_mt & AG_CTR_SHARED);
-	int64_t* dst = (obj->wb_p & AG_F_PARENT) != 0
+	uintptr_t* dst = (obj->wb_p & AG_F_PARENT) != 0
 		? &obj->wb_p
 		: &((AgWeak*)obj->wb_p)->org_pointer_to_parent;
 	if ((obj->ctr_mt & AG_CTR_HASH) == 0) {
