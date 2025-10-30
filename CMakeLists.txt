@@ -7,7 +7,7 @@ endif()
 
 add_subdirectory(ag-ffi-header)
 
-add_library (ag_runtime STATIC
+add_library (sys STATIC
     src/runtime.c
     src/blob.c
     src/ag-queue.c
@@ -26,4 +26,4 @@ add_library (ag_runtime STATIC
     src/map/weak-map.c
 )
 
-ag_ffi_configure_target(ag_runtime "") #TODO: move defs to sys.ag
+ag_ffi_configure_target(sys "sys.ag")
