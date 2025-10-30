@@ -1,0 +1,126 @@
+// This file is not in use yet, but it reflects
+// inner declarations of built-in content of sys module
+
+class Object {
+	-getHash() int;
+	-equals(b -Object) bool;
+}
+class Blob{
+	count = 0; // TODO: make it private with _
+	bytes = 0; // TODO: make it a handle
+	-capacity() int;
+	insert(at int, count int);
+	delete(at int count int);
+	copy(toPos int, from -Blob, fromPos int, count int) bool;
+	-get8At(pos int) short;
+	set8At(pos int, val short);
+	-get16At(pos int) short;
+	set16At(pos int, val short);
+	-get32At(pos int) short;
+	set32At(pos int, val short);
+	-get64At(pos int) int;
+	set64At(pos int, val int);
+	putChAt(pos int, val short) int;
+	-mkStr(pos int, count int) str;
+}
+class StrBuilder { +Blob }
+class Array (T Object){
+	itemsCount = 0; // TODO: make private
+	items = 0; // TODO: make handle
+	-capacity() int;
+	insert(at int, count int);
+	delete(at int, count int);
+	move(a int, b int, c int) bool; // before: X[start-a], Y[a-b], Z[b-c], T[c-end]; after: XZYT
+	-getAt(at int) ?T;
+	setAt(at int, val @T); // TODO: relax this rule
+	setOptAt(at int, val ?@T) ?T;
+	spliceAt(at int, ?T) bool;
+}
+class WeakArray (T Object){
+	itemsCount = 0; // TODO: make private
+	items = 0; // TODO: make handle
+	-capacity() int;
+	insert(at int, count int);
+	delete(at int, count int);
+	move(a int, b int, c int) bool; // before: X[start-a], Y[a-b], Z[b-c], T[c-end]; after: XZYT
+	-getAt(at int) &T;
+	setAt(at int, val &T);
+}
+class SharedArray (T Object){
+	itemsCount = 0; // TODO: make private
+	items = 0; // TODO: make handle
+	-capacity() int;
+	insert(at int, count int);
+	delete(at int, count int);
+	move(a int, b int, c int) bool; // before: X[start-a], Y[a-b], Z[b-c], T[c-end]; after: XZYT
+	-getAt(at int) ?*T;
+	setAt(at int, val *T);
+}
+class String {
+	stub = 0s;  // TODO: private
+	-getHash() int;
+	-equals(b -Object) bool;
+	// TODO: cursor() @Cursor;
+}
+class Cursor{
+    cursor = 0; // TODO: private
+	buffer = ""; // TODO: private
+	set(buffer str) this;
+	getCh() short;
+	-peekCh() short;
+	-offset() int;
+}
+class Map (K Object, V Object) {
+	buckets = 0;  // TODO: private handle
+	cap = 0; // TODO: private
+	sz = 0;  // TODO: private
+	-size() int;
+	-capacity() int;
+	clear();
+	delete(key *K) ?V;
+	-getAt(key *K) ?V;
+	setAt(key *K, val @V) ?V;
+	-keyAt(pos int) ?*K;
+	-valAt(pos int) ?V;
+}
+class WeakMap (K Object, V Object) {
+	buckets = 0;  // TODO: private handle
+	cap = 0; // TODO: private
+	sz = 0;  // TODO: private
+	-size() int;
+	-capacity() int;
+	clear();
+	delete(key *K) &V;
+	-getAt(key *K) &V;
+	setAt(key *K, val &V) &V;
+	-keyAt(pos int) ?*K;
+	-valAt(pos int) &V;
+}
+class SharedMap (K Object, V Object) {
+	buckets = 0;  // TODO: private handle
+	cap = 0; // TODO: private
+	sz = 0;  // TODO: private
+	-size() int;
+	-capacity() int;
+	clear();
+	delete(key *K) ?*V;
+	-getAt(key *K) ?*V;
+	setAt(key *K, val *V) ?*V;
+	-keyAt(pos int) ?*K;
+	-valAt(pos int) ?*V;
+}
+class Thread (R Object) {
+	internal = 0; // TODO: private handle
+	start(newRoot R) this;
+	-root() &R;
+}
+fn getParent(obj Object) ?Object;
+fn log(s str);
+fn hash(obj *Object) int;
+fn nowMs() int;
+fn terminate(result int);
+fn setMainObject(obj ?Object);
+fn weakExists(weak &Object) bool;
+fn powDbl(d double) double;
+fn log10Dbl(d double) double;
+fn postTimer(utcMs int, toCall&());
