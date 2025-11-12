@@ -2,7 +2,7 @@
 #include <stdint.h> // int32_t int64_t
 #include <stdio.h> // puts
 #include <assert.h>
-#include <time.h>  // timespec, timespec_get
+#include <time.h>  // timespec, timespec_get|clock_gettime
 #include <math.h>  // pow
 
 #include "ag-ffi-header/ag-threads.h"
@@ -19,6 +19,11 @@
 #define AG_TRACE0(msg)
 #endif
 
+#ifdef __ANDROID__
+#define AG_GETTIME(ts_ptr) (clock_gettime(CLOCK_REALTIME, ts_ptr) == 0)
+#else
+#define AG_GETTIME(ts_ptr) (timespec_get(ts_ptr, TIME_UTC) != 0)
+#endif
 //
 // Tags for copy operation
 // AG_TG_NOWEAK_DST should match AG_F_PARENT
@@ -542,7 +547,7 @@ void ag_fn_sys_log(AgString* s) {
 }
 uint64_t ag_fn_sys_nowMs() {
 	struct timespec now;
-	return timespec_get(&now, TIME_UTC) ? timespec_to_ms(&now) : 0;
+	return AG_GETTIME(&now) ? timespec_to_ms(&now) : 0;
 }
 
 int64_t ag_fn_sys_hash(AgObject* obj) {  // Shared
@@ -777,7 +782,7 @@ void* ag_thread_proc(ag_thread* th) {
 			}
 			AG_TRACE0("thread_proc handle incoming]");
 			pthread_mutex_lock(&th->mutex);
-		} else if (th->timer_ms && timespec_get(&now, TIME_UTC) && timespec_to_ms(&now) >= th->timer_ms) {
+		} else if (th->timer_ms && AG_GETTIME(&now) && timespec_to_ms(&now) >= th->timer_ms) {
 			th->timer_ms = 0;
 			AgObject* timer_object = ag_deref_weak(th->timer_proc_param);
 			if (timer_object) {
