@@ -1,5 +1,6 @@
 #include <stdint.h>
 #include "ag-ffi-header/array/array-base.h"
+#include "array-base-impl.h"
 
 int64_t AG_NAME(ag_m_sys_, Array_capacity)(AgBaseArray* c) {
 	return c->items_count;
