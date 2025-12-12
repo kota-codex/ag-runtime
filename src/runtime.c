@@ -969,13 +969,6 @@ void ag_detach_weak(AgWeak* w) {
 	ag_make_weak_mt(w);
 }
 
-AgString* ag_make_str(const char* start, size_t size) {
-	AgString* s = (AgString*)ag_allocate_obj(sizeof(AgString) + size);
-	ag_memcpy(s->chars, start, size);
-	s->chars[size] = 0;
-	s->head.dispatcher = ag_disp_sys_String;
-	s->head.ctr_mt |= AG_CTR_SHARED | AG_CTR_HASH;
-	s->head.wb_p = ag_getStringHash(s->chars) | 1;
-	// TODO: combine hash calc and copy
-	return s;
-}
+// It's defined in the compiled code b/c it uses different internals
+// depending on pie/no-pie mode.
+AgString* ag_make_str(const char* start, size_t size);
